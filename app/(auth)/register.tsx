@@ -3,17 +3,17 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
 import { useState } from 'react';
 import {
-    ActivityIndicator,
-    Alert,
-    KeyboardAvoidingView,
-    Platform,
-    Pressable,
-    SafeAreaView,
-    ScrollView,
-    StyleSheet,
-    Text,
-    TextInput,
-    View,
+  ActivityIndicator,
+  Alert,
+  KeyboardAvoidingView,
+  Platform,
+  Pressable,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
 } from 'react-native';
 
 import { registerUser } from '../../src/services/auth';
@@ -270,7 +270,7 @@ export default function RegisterScreen() {
               </Text>
 
               <Pressable
-                onPress={() => router.replace('./(auth)/login')}
+                onPress={() => router.replace('/(auth)/login')}
               >
                 <Text style={styles.footerLink}>
                   Sign in

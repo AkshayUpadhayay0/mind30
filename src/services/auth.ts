@@ -1,26 +1,24 @@
 import {
-    createUserWithEmailAndPassword,
-    getAuth,
-    signInWithEmailAndPassword,
-    signOut,
-    updateProfile,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut,
+  updateProfile,
 } from 'firebase/auth';
 
-import firebaseApp from '../config/firebase';
+import { auth } from '../config/firebase';
 import { createUserProfile } from './firestore';
-
-const auth = getAuth(firebaseApp);
 
 export const registerUser = async (
   name: string,
   email: string,
   password: string
 ) => {
-  const userCredential = await createUserWithEmailAndPassword(
-    auth,
-    email.trim(),
-    password
-  );
+  const userCredential =
+    await createUserWithEmailAndPassword(
+      auth,
+      email.trim(),
+      password
+    );
 
   await updateProfile(userCredential.user, {
     displayName: name.trim(),
@@ -39,11 +37,12 @@ export const loginUser = async (
   email: string,
   password: string
 ) => {
-  const userCredential = await signInWithEmailAndPassword(
-    auth,
-    email.trim(),
-    password
-  );
+  const userCredential =
+    await signInWithEmailAndPassword(
+      auth,
+      email.trim(),
+      password
+    );
 
   return userCredential.user;
 };

@@ -3,16 +3,16 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
 import { useState } from 'react';
 import {
-    ActivityIndicator,
-    Alert,
-    KeyboardAvoidingView,
-    Platform,
-    Pressable,
-    SafeAreaView,
-    StyleSheet,
-    Text,
-    TextInput,
-    View,
+  ActivityIndicator,
+  Alert,
+  KeyboardAvoidingView,
+  Platform,
+  Pressable,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
 } from 'react-native';
 
 import { loginUser } from '../../src/services/auth';
@@ -190,7 +190,7 @@ export default function LoginScreen() {
               </Text>
 
               <Pressable
-                onPress={() => router.push('./(auth)/register')}
+                onPress={() => router.push('/(auth)/register')}
               >
                 <Text style={styles.footerLink}>
                   Start the challenge
@@ -369,6 +369,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     gap: 6,
     paddingTop: 28,
+    marginBottom: 12,
   },
 
   footerText: {
