@@ -1,15 +1,17 @@
 import {
-    createContext,
-    ReactNode,
-    useContext,
-    useEffect,
-    useState,
+  createContext,
+  ReactNode,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
 } from 'react';
 
 import {
-    getUserProfile,
-    UserProfile,
+  getUserProfile,
+  UserProfile,
 } from '../services/firestore';
+
 import { useAuth } from './AuthContext';
 
 type UserContextType = {
@@ -31,37 +33,45 @@ type UserProviderProps = {
 export function UserProvider({
   children,
 }: UserProviderProps) {
-  const { user, loading: authLoading } = useAuth();
+  const {
+    user,
+    loading: authLoading,
+  } = useAuth();
 
   const [profile, setProfile] =
     useState<UserProfile | null>(null);
 
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] =
+    useState(true);
 
-  const loadProfile = async () => {
-    if (!user) {
-      setProfile(null);
-      setLoading(false);
-      return;
-    }
+  const loadProfile = useCallback(
+    async () => {
+      if (!user) {
+        setProfile(null);
+        setLoading(false);
+        return;
+      }
 
-    try {
-      setLoading(true);
+      try {
+        setLoading(true);
 
-      const userProfile = await getUserProfile(user.uid);
+        const userProfile =
+          await getUserProfile(user.uid);
 
-      setProfile(userProfile);
-    } catch (error) {
-      console.error(
-        'Failed to load user profile:',
-        error
-      );
+        setProfile(userProfile);
+      } catch (error) {
+        console.error(
+          'Failed to load user profile:',
+          error
+        );
 
-      setProfile(null);
-    } finally {
-      setLoading(false);
-    }
-  };
+        setProfile(null);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [user]
+  );
 
   useEffect(() => {
     if (authLoading) {
@@ -69,7 +79,7 @@ export function UserProvider({
     }
 
     loadProfile();
-  }, [user, authLoading]);
+  }, [authLoading, loadProfile]);
 
   return (
     <UserContext.Provider
