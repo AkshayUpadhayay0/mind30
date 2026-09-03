@@ -18,7 +18,7 @@ import { useFocusEffect, } from 'expo-router';
 
 export default function HomeScreen() {
 
-  const { profile, loading,  refreshProfile } = useUser();
+  const { profile, loading, refreshProfile } = useUser();
 
 
   useFocusEffect(
@@ -91,11 +91,11 @@ export default function HomeScreen() {
               </Text>
             </View>
 
-            <View style={styles.profileButton}>
+            <Pressable style={styles.profileButton} onPress={() => router.push('/profile')}>
               <Text style={styles.profileInitial}>
                 {firstName.charAt(0).toUpperCase()}
               </Text>
-            </View>
+            </Pressable>
           </View>
 
           {/* BRAND */}
@@ -242,39 +242,13 @@ export default function HomeScreen() {
             </View>
           </View>
 
-          <View style={styles.challengeCard}>
-            <View style={styles.challengeIcon}>
-              <Ionicons
-                name="calculator-outline"
-                size={27}
-                color="#B7FF3C"
-              />
-            </View>
-
-            <View style={styles.challengeContent}>
-              <Text style={styles.challengeTitle}>
-                Math Challenge
-              </Text>
-
-              <Text style={styles.challengeDescription}>
-                5 questions • Beat the timer
-              </Text>
-            </View>
-
-            <View style={styles.challengeLevel}>
-              <Text style={styles.challengeLevelText}>
-                LV.{profile.currentLevel}
-              </Text>
-            </View>
-          </View>
-
           <Pressable
             style={({ pressed }) => [
               styles.startButton,
               pressed && styles.buttonPressed,
             ]}
             onPress={() => {
-              router.push('/challenge');
+              router.push('/games');
             }}
           >
             <Text style={styles.startButtonText}>
@@ -288,119 +262,34 @@ export default function HomeScreen() {
             />
           </Pressable>
 
-          {/* SUDOKU */}
-          <View style={styles.sectionHeader}>
-            <Text style={styles.sectionTitle}>
-              BRAIN TRAINING
-            </Text>
-
-            <Text style={styles.optionalText}>
-              OPTIONAL
-            </Text>
-          </View>
-
-          <Pressable style={styles.sudokuCard}>
-            <View style={styles.sudokuIcon}>
-              <Ionicons
-                name="grid-outline"
-                size={24}
-                color="#AAB1B5"
-              />
-            </View>
-
-            <View style={styles.challengeContent}>
-              <Text style={styles.sudokuTitle}>
-                Daily Sudoku
-              </Text>
-
-              <Text style={styles.challengeDescription}>
-                Train your logic. No streak pressure.
-              </Text>
-            </View>
-
-            <Ionicons
-              name="chevron-forward"
-              size={21}
-              color="#697176"
-            />
-          </Pressable>
-
-          {/* ACCOUNT INFO - temporary debug/info */}
-          <View style={styles.accountCard}>
-            <Text style={styles.accountTitle}>
+          <Pressable
+            style={({ pressed }) => [
+              styles.startButton2,
+              pressed && styles.buttonPressed,
+            ]}
+            onPress={() => {
+              router.push('/profile');
+            }}
+          >
+            <Text style={styles.startButton2Text}>
               PLAYER PROFILE
             </Text>
 
-            <ProfileRow
-              label="Name"
-              value={profile.displayName}
+            <Ionicons
+              name="person-circle-outline"
+              size={26}
+              color="#B7FF3C"
             />
+          </Pressable>
 
-            <ProfileRow
-              label="Email"
-              value={profile.email}
-            />
 
-            <ProfileRow
-              label="Level"
-              value={String(profile.currentLevel)}
-            />
-
-            <ProfileRow
-              label="Current streak"
-              value={`${profile.currentStreak} days`}
-            />
-
-            <ProfileRow
-              label="Longest streak"
-              value={`${profile.longestStreak} days`}
-            />
-
-            <ProfileRow
-              label="Reward eligible"
-              value={
-                profile.rewardEligible ? 'Yes' : 'No'
-              }
-              last
-            />
-          </View>
         </ScrollView>
       </SafeAreaView>
     </LinearGradient>
   );
 }
 
-type ProfileRowProps = {
-  label: string;
-  value: string;
-  last?: boolean;
-};
 
-function ProfileRow({
-  label,
-  value,
-  last,
-}: ProfileRowProps) {
-  return (
-    <View
-      style={[
-        styles.profileRow,
-        last && styles.profileRowLast,
-      ]}
-    >
-      <Text style={styles.profileRowLabel}>
-        {label}
-      </Text>
-
-      <Text
-        style={styles.profileRowValue}
-        numberOfLines={1}
-      >
-        {value}
-      </Text>
-    </View>
-  );
-}
 
 const styles = StyleSheet.create({
   background: {
@@ -413,8 +302,8 @@ const styles = StyleSheet.create({
 
   content: {
     paddingHorizontal: 20,
-    paddingTop: 50,
-    paddingBottom: 50,
+    paddingTop: 35,
+    paddingBottom: 40,
   },
 
   loadingContainer: {
@@ -761,72 +650,24 @@ const styles = StyleSheet.create({
     opacity: 0.85,
   },
 
-  sudokuCard: {
-    minHeight: 80,
-    borderRadius: 20,
-    backgroundColor: '#101518',
-    borderWidth: 1,
-    borderColor: '#22292D',
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 15,
-  },
-
-  sudokuIcon: {
-    width: 48,
-    height: 48,
-    borderRadius: 15,
-    backgroundColor: '#1B2023',
+  startButton2: {
+    height: 60,
+    backgroundColor: '#171D20',
+    borderRadius: 19,
+    marginTop: 13,
     alignItems: 'center',
     justifyContent: 'center',
-  },
-
-  sudokuTitle: {
-    color: '#C9CED1',
-    fontSize: 15,
-    fontWeight: '800',
-  },
-
-  accountCard: {
-    marginTop: 30,
-    backgroundColor: '#101518',
-    borderRadius: 21,
-    borderWidth: 1,
-    borderColor: '#22292D',
-    padding: 18,
-  },
-
-  accountTitle: {
-    color: '#747E83',
-    fontSize: 10,
-    fontWeight: '900',
-    letterSpacing: 1.2,
-    marginBottom: 8,
-  },
-
-  profileRow: {
-    minHeight: 43,
-    borderBottomWidth: 1,
-    borderBottomColor: '#22292D',
     flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    gap: 9,
+    borderWidth: 1,
+    borderColor: '#2A3235',
   },
 
-  profileRowLast: {
-    borderBottomWidth: 0,
+  startButton2Text: {
+    color: '#B7FF3C',
+    fontSize: 14,
+    fontWeight: '900',
+    letterSpacing: 0.8,
   },
 
-  profileRowLabel: {
-    color: '#6F787D',
-    fontSize: 12,
-  },
-
-  profileRowValue: {
-    maxWidth: '62%',
-    color: '#DDE1E3',
-    fontSize: 12,
-    fontWeight: '700',
-    textAlign: 'right',
-  },
 });

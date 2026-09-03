@@ -28,7 +28,7 @@ import { auth } from '../src/services/auth';
 import { completeDailyChallenge } from '../src/services/firestore';
 
 
-const TOTAL_QUESTIONS = 5;
+const TOTAL_QUESTIONS = 10;
 
 export default function ChallengeScreen() {
   const { profile } = useUser();
@@ -565,6 +565,8 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
     paddingHorizontal: 20,
+    paddingTop: 35,
+    paddingBottom: 40,
   },
 
   header: {
