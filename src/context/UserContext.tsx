@@ -9,6 +9,7 @@ import {
 
 import {
   getUserProfile,
+  resetStreakIfMissedDay,
   UserProfile,
 } from '../services/firestore';
 
@@ -20,11 +21,12 @@ type UserContextType = {
   refreshProfile: () => Promise<void>;
 };
 
-const UserContext = createContext<UserContextType>({
-  profile: null,
-  loading: true,
-  refreshProfile: async () => {},
-});
+const UserContext =
+  createContext<UserContextType>({
+    profile: null,
+    loading: true,
+    refreshProfile: async () => {},
+  });
 
 type UserProviderProps = {
   children: ReactNode;
@@ -44,8 +46,8 @@ export function UserProvider({
   const [loading, setLoading] =
     useState(true);
 
-  const loadProfile = useCallback(
-    async () => {
+  const loadProfile =
+    useCallback(async () => {
       if (!user) {
         setProfile(null);
         setLoading(false);
@@ -55,8 +57,25 @@ export function UserProvider({
       try {
         setLoading(true);
 
+        /*
+         * First check whether the user
+         * missed a day.
+         *
+         * If they did, this updates
+         * currentStreak to 0 in Firebase.
+         */
+        await resetStreakIfMissedDay(
+          user.uid
+        );
+
+        /*
+         * Now read the latest profile
+         * from Firebase.
+         */
         const userProfile =
-          await getUserProfile(user.uid);
+          await getUserProfile(
+            user.uid
+          );
 
         setProfile(userProfile);
       } catch (error) {
@@ -69,9 +88,7 @@ export function UserProvider({
       } finally {
         setLoading(false);
       }
-    },
-    [user]
-  );
+    }, [user]);
 
   useEffect(() => {
     if (authLoading) {
@@ -79,14 +96,19 @@ export function UserProvider({
     }
 
     loadProfile();
-  }, [authLoading, loadProfile]);
+  }, [
+    authLoading,
+    loadProfile,
+  ]);
 
   return (
     <UserContext.Provider
       value={{
         profile,
-        loading: authLoading || loading,
-        refreshProfile: loadProfile,
+        loading:
+          authLoading || loading,
+        refreshProfile:
+          loadProfile,
       }}
     >
       {children}

@@ -138,9 +138,10 @@ export default function GamesScreen() {
                                 />
                             </View>
 
-                            <View style={styles.comingSoonBadge}>
-                                <Text style={styles.comingSoonText}>
-                                    COMING SOON
+                            <View style={styles.activeBadge}>
+                                <View style={styles.activeDot} />
+                                <Text style={styles.activeText}>
+                                    AVAILABLE
                                 </Text>
                             </View>
                         </View>
@@ -160,18 +161,23 @@ export default function GamesScreen() {
                             </Text>
                         </View>
 
-                        {/* Disabled Button */}
-                        <View style={styles.disabledButton}>
-                            <Ionicons
-                                name="lock-closed-outline"
-                                size={17}
-                                color="#626A64"
-                            />
-
-                            <Text style={styles.disabledButtonText}>
-                                COMING SOON
+                        <Pressable
+                            style={({ pressed }) => [
+                                styles.sudokuPlayButton,
+                                pressed && styles.buttonPressed,
+                            ]}
+                            onPress={() => router.push('/sudoku')}
+                        >
+                            <Text style={styles.sudokuPlayButtonText}>
+                                PLAY SUDOKU
                             </Text>
-                        </View>
+
+                            <Ionicons
+                                name="arrow-forward"
+                                size={19}
+                                color="#FFFFFF"
+                            />
+                        </Pressable>
                     </View>
                 </View>
 
@@ -466,5 +472,24 @@ const styles = StyleSheet.create({
         fontSize: 11,
         marginLeft: 7,
         textAlign: 'center',
+    },
+    sudokuPlayButton: {
+        height: 52,
+        borderRadius: 16,
+        backgroundColor: '#1A2023',
+        borderWidth: 1,
+        borderColor: '#30383B',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginTop: 24,
+    },
+
+    sudokuPlayButtonText: {
+        color: '#FFFFFF',
+        fontSize: 12,
+        fontWeight: '900',
+        letterSpacing: 1,
+        marginRight: 8,
     },
 });
