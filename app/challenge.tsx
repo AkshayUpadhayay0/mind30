@@ -42,6 +42,7 @@ export default function ChallengeScreen() {
     useState(0);
 
   const [answer, setAnswer] = useState('');
+  const [error, setError] = useState('');
 
   const [timeLeft, setTimeLeft] =
     useState(getChallengeTimeSeconds(level));
@@ -179,30 +180,32 @@ export default function ChallengeScreen() {
       Number.isFinite(userAnswer) &&
       userAnswer === question.answer
     ) {
-      const newCompleted =
-        completed + 1;
+      // Correct answer
+      const newCompleted = completed + 1;
 
       setAnswer('');
+      setError('');
 
       if (newCompleted >= TOTAL_QUESTIONS) {
         await finishChallenge();
       } else {
         setCompleted(newCompleted);
 
+        // Generate a NEW question only after correct answer
         setQuestion(
           generateMathQuestion(level)
         );
       }
     } else {
+      // Wrong answer
       setWrongCount(
         previous => previous + 1
       );
 
-      setAnswer('');
+      setError('Incorrect answer');
 
-      setQuestion(
-        generateMathQuestion(level)
-      );
+      // ❌ Do NOT generate a new question
+      // The current question stays on screen
     }
 
     setChecking(false);
@@ -360,7 +363,7 @@ export default function ChallengeScreen() {
 
           <Text style={styles.retryDescription}>
             Don't worry. You can try again with
-            5 completely new questions.
+            10 completely new questions.
           </Text>
 
           <Pressable
@@ -490,6 +493,12 @@ export default function ChallengeScreen() {
               {question?.text ?? '...'}
             </Text>
 
+            {error !== '' && (
+              <Text style={styles.errorText}>
+                {error}
+              </Text>
+            )}
+
             <Text style={styles.questionHint}>
               Enter your answer
             </Text>
@@ -533,22 +542,6 @@ export default function ChallengeScreen() {
                 color="#080B0D"
               />
             </Pressable>
-          </View>
-
-          {/* INFO */}
-
-          <View style={styles.infoCard}>
-            <Ionicons
-              name="information-circle-outline"
-              size={20}
-              color="#747E83"
-            />
-
-            <Text style={styles.infoText}>
-              Wrong answer? No problem. You'll
-              receive a new question and the timer
-              keeps running.
-            </Text>
           </View>
         </View>
       </SafeAreaView>
@@ -931,5 +924,12 @@ const styles = StyleSheet.create({
     fontSize: 11,
     fontWeight: '800',
     letterSpacing: 0.8,
+  },
+  errorText: {
+    color: '#FF6B6B',
+    fontSize: 13,
+    fontWeight: '700',
+    textAlign: 'center',
+    marginTop: 10,
   },
 });
