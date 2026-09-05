@@ -1,13 +1,13 @@
 import {
-    onAuthStateChanged,
-    User,
+  onAuthStateChanged,
+  User,
 } from 'firebase/auth';
 import {
-    createContext,
-    ReactNode,
-    useContext,
-    useEffect,
-    useState,
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useState,
 } from 'react';
 
 import { auth } from '../services/auth';
