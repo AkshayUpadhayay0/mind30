@@ -369,7 +369,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     gap: 6,
     paddingTop: 28,
-    marginBottom: 12,
+    marginBottom: 28,
   },
 
   footerText: {

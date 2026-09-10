@@ -473,6 +473,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     gap: 6,
     marginTop: 28,
+    marginBottom: 28,
   },
 
   footerText: {
